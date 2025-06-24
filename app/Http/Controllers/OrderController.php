@@ -208,6 +208,7 @@ use Illuminate\Http\Request;
                           updated_at = NOW()
                       WHERE orderId = :orderId';
 
+
             $stmt = $this->db->prepare($query);
 
             $stmt->bindParam(':orderId', $request->orderId, PDO::PARAM_STR);
