@@ -9,4 +9,5 @@ echo "Caching routes..."
 php artisan route:cache
 
 echo "Running migrations..."
-php /var/www/html/scripts/setup.php
+php artisan migrate
+
