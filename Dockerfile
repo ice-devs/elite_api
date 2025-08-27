@@ -16,7 +16,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Copy Nginx config
-COPY .conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
+COPY ./conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html \
