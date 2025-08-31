@@ -30,4 +30,4 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 80
 
 # Start Supervisor (which runs Nginx + PHP-FPM together)
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf, /start.sh"]
