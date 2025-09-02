@@ -17,7 +17,7 @@ use PDO;
 use PDOException;
 use App\CloudinaryUploader;
 
-class ProductController {
+class ProductController extends Controller {
     private $db;
     private $uploader;
 
