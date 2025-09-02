@@ -33,7 +33,7 @@ use Illuminate\Http\Request;
 
         public function getOrders($id) {
 
-            echo "yila"
+            echo "yila";
 
         }
 
