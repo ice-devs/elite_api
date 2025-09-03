@@ -33,8 +33,30 @@ use Illuminate\Http\Request;
 
         public function getOrders($id) {
 
-            echo "yila";
+            if ($id === '') {
+                $query = 'SELECT * FROM orders ORDER BY updated_at DESC';
+                $stmt = $this->db->prepare($query);
 
+                try {
+                    $stmt->execute();
+                    $orders = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+                    if ($orders) {
+                        echo json_encode($orders);
+                    } else {
+                        echo json_encode([]);
+                    }
+                } catch (PDOException $e) {
+                    echo json_encode([
+                        "status" => "error",
+                        "message" => "An error occurred: " . $e->getMessage()
+                    ]);
+                }
+            } elseif ($id === 'idsArray') {
+                $this->getIdsArray();
+            } else {
+                $this->getOrderById($id);
+            }
         }
 
         public function getOrderById($orderId) {

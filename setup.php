@@ -82,21 +82,21 @@ CREATE TABLE IF NOT EXISTS coupons (
 );
 ";
 
-// try {
-//     $db->exec($query_orders);
-//     echo "Table 'orders' created successfully or already exists.";
+try {
+    $db->exec($query_orders);
+    echo "Table 'orders' created successfully or already exists.";
 
-//     $db->exec($query_products);
-//     echo "Table 'products' created successfully or already exists.";
+    $db->exec($query_products);
+    echo "Table 'products' created successfully or already exists.";
 
-//     $db->exec($query_delivery);
-//     echo "Table 'delivery' created successfully or already exists.";
+    $db->exec($query_delivery);
+    echo "Table 'delivery' created successfully or already exists.";
 
-//     $db->exec($query_categories);
-//     echo "Table 'categories' created successfully or already exists.";
+    $db->exec($query_categories);
+    echo "Table 'categories' created successfully or already exists.";
 
-//     $db->exec($query_coupons);
-//     echo "Table 'coupons' created successfully or already exists.";
-// } catch (PDOException $e) {
-//     echo "Error creating tables: " . $e->getMessage();
-// }
+    $db->exec($query_coupons);
+    echo "Table 'coupons' created successfully or already exists.";
+} catch (PDOException $e) {
+    echo "Error creating tables: " . $e->getMessage();
+}

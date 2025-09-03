@@ -11,4 +11,6 @@ php artisan route:cache
 echo "Running migrations..."
 # php artisan migrate
 
-php setup.php
+echo "Setting up database..."
+php artisan db:setup
+
