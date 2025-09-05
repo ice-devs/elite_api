@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Database;
 use PDO;
 use PDOException;
 use App\Http\Controllers\ProductController;
 use App\Mailer;
 
-use Illuminate\Http\Request;
 
 
     class OrderController extends Controller {
@@ -31,75 +33,110 @@ use Illuminate\Http\Request;
             $this->mailer = new Mailer();
         }
 
-        public function getOrders($id) {
+        // public function getOrders($id) {
 
-            if ($id === '') {
-                $query = 'SELECT * FROM orders ORDER BY updated_at DESC';
-                $stmt = $this->db->prepare($query);
+        //     if ($id === '') {
+        //         $query = 'SELECT * FROM orders ORDER BY updated_at DESC';
+        //         $stmt = $this->db->prepare($query);
 
-                try {
-                    $stmt->execute();
-                    $orders = $stmt->fetchAll(PDO::FETCH_OBJ);
+        //         try {
+        //             $stmt->execute();
+        //             $orders = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-                    if ($orders) {
-                        echo json_encode($orders);
-                    } else {
-                        echo json_encode([]);
-                    }
-                } catch (PDOException $e) {
-                    echo json_encode([
-                        "status" => "error",
-                        "message" => "An error occurred: " . $e->getMessage()
-                    ]);
-                }
+        //             if ($orders) {
+        //                 echo json_encode($orders);
+        //             } else {
+        //                 echo json_encode([]);
+        //             }
+        //         } catch (PDOException $e) {
+        //             echo json_encode([
+        //                 "status" => "error",
+        //                 "message" => "An error occurred: " . $e->getMessage()
+        //             ]);
+        //         }
+        //     } elseif ($id === 'idsArray') {
+        //         $this->getIdsArray();
+        //     } else {
+        //         $this->getOrderById($id);
+        //     }
+        // }
+
+        // public function getOrderById($orderId) {
+        //     $query = 'SELECT * FROM orders WHERE orderId = :orderId';
+        //     $stmt = $this->db->prepare($query);
+
+        //     try {
+        //         $stmt->bindParam(':orderId', $orderId, PDO::PARAM_STR);
+        //         $stmt->execute();
+        //         $orders = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        //         if ($orders) {
+        //             echo json_encode($orders);
+        //         } else {
+        //             echo json_encode([]);
+        //         }
+        //     } catch (PDOException $e) {
+        //         return [
+        //             "status" => "error",
+        //             "message" => "An error occurred: " . $e->getMessage()
+        //         ];
+        //     }
+        // }
+
+        // public function getIdsArray() {
+        //     $query = 'SELECT orderId FROM orders';
+        //     $stmt = $this->db->prepare($query);
+
+        //     try {
+        //         $stmt->execute();
+        //         $IdsArray = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        //         if ($IdsArray) {
+        //             echo json_encode($IdsArray);
+        //         } else {
+        //             echo json_encode([]);
+        //         }
+        //     } catch (PDOException $e) {
+        //         echo json_encode([
+        //             "status" => "error",
+        //             "message" => "An error occurred: " . $e->getMessage()
+        //         ]);
+        //     }
+        // }
+
+
+        public function getOrders($id = null){
+            if (empty($id)) {
+                // Get all orders, latest first
+                $orders = DB::table('orders')
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+
+                return response()->json($orders);
             } elseif ($id === 'idsArray') {
-                $this->getIdsArray();
+                return $this->getIdsArray();
             } else {
-                $this->getOrderById($id);
+                return $this->getOrderById($id);
             }
         }
 
-        public function getOrderById($orderId) {
-            $query = 'SELECT * FROM orders WHERE orderId = :orderId';
-            $stmt = $this->db->prepare($query);
+        public function getOrderById($orderId){
+            $order = DB::table('orders')
+                ->where('orderId', $orderId)
+                ->first(); // single row
 
-            try {
-                $stmt->bindParam(':orderId', $orderId, PDO::PARAM_STR);
-                $stmt->execute();
-                $orders = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-                if ($orders) {
-                    echo json_encode($orders);
-                } else {
-                    echo json_encode([]);
-                }
-            } catch (PDOException $e) {
-                return [
-                    "status" => "error",
-                    "message" => "An error occurred: " . $e->getMessage()
-                ];
+            if ($order) {
+                return response()->json($order);
             }
+
+            return response()->json([]);
         }
 
-        public function getIdsArray() {
-            $query = 'SELECT orderId FROM orders';
-            $stmt = $this->db->prepare($query);
+        public function getIdsArray(){
+            $ids = DB::table('orders')
+                ->pluck('orderId'); // fetch just orderId column
 
-            try {
-                $stmt->execute();
-                $IdsArray = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-
-                if ($IdsArray) {
-                    echo json_encode($IdsArray);
-                } else {
-                    echo json_encode([]);
-                }
-            } catch (PDOException $e) {
-                echo json_encode([
-                    "status" => "error",
-                    "message" => "An error occurred: " . $e->getMessage()
-                ]);
-            }
+            return response()->json($ids);
         }
 
         public function createOrder(Request $request) {
