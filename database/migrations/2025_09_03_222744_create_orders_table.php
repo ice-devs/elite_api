@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->integer('balance');
             $table->string('coupon')->nullable();
             $table->integer('discount')->nullable();
-            $table->json('product'); // JSON is better if structured
+            $table->text('product'); // JSON is better if structured
             $table->string('deliveryState')->nullable();
             $table->string('deliveryMethod')->nullable();
             $table->string('payMethod')->nullable();
