@@ -1,15 +1,20 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OrderController;
 
-Route::get('/orders/{id}', [OrderController::class, 'getOrders']);
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-Route::post('/orders', [OrderController::class, 'createOrder']);
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::post('/orders/{updateStatus}', [OrderController::class, 'updateStatus']);
-
-Route::post('/orders/{payBalance}', [OrderController::class, 'updateStatus']);
-
-?>
+Route::get('/home', 'HomeController@index')->name('home');
