@@ -23,9 +23,9 @@ class OrderController extends Controller
 
 
 
-    public function getOrders($id)
+    public function getOrders($id = null)
     {
-        if (empty($id)) {
+        if (is_null($id)) {
             // Get all orders, latest first
             $orders = DB::table('orders')
                 ->orderBy('updated_at', 'desc')

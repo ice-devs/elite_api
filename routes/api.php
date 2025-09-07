@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 
-Route::get('/orders/{id}', [OrderController::class, 'getOrders']);
+Route::get('/orders/{id?}', [OrderController::class, 'getOrders']);
 
 // Route::post('/orders', [OrderController::class, 'createOrder']);
 
