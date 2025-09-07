@@ -23,7 +23,7 @@ class OrderController extends Controller
 
 
 
-    public function getOrders($id = null)
+    public function getOrders($id)
     {
         if (empty($id)) {
             // Get all orders, latest first
