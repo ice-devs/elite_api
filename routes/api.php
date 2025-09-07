@@ -12,8 +12,5 @@ Route::post('/orders/{updateStatus}', [OrderController::class, 'updateStatus']);
 
 Route::post('/orders/{payBalance}', [OrderController::class, 'updateStatus']);
 
-Route::get('/txt', function () {
-    echo "[]" ;
-});
 
 ?>
