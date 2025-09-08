@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->string('categoryId')->unique();
             $table->string('name');
-            $table->string('createdAt');
-            $table->timestamps();
+            $table->timestamp('createdAt')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

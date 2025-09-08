@@ -28,7 +28,9 @@ return new class extends Migration {
             $table->string('deliveryMethod')->nullable();
             $table->string('payMethod')->nullable();
             $table->string('date');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
         });
     }
 
