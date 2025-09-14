@@ -33,6 +33,46 @@ class ProductController extends Controller
         return $fileUrl;
     }
 
+
+    public function getProducts($id = null)
+    {
+        try {
+            if (is_null($id)) {
+                $products = DB::table('products')
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+
+                if ($products->isNotEmpty()) {
+                    return response()->json($products);
+                } else {
+                    return response()->json([]);
+                }
+            } else {
+                return $this->getProductsById($id);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "message" => "An error occurred: " . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function getProductsById($productId)
+    {
+        $product = DB::table('products')
+            ->where('productId', $productId)
+            ->first(); // single row
+
+        if ($product) {
+            return response()->json($product);
+        }
+
+        return response()->json([]);
+    }
+
+
     public function updateSalesCount($name, $salesCount)
     {
         $updated = DB::table('products')

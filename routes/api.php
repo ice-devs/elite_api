@@ -13,4 +13,9 @@ Route::post('/orders', [OrderController::class, 'createOrder']);
 // Route::post('/orders/{payBalance}', [OrderController::class, 'updateStatus']);
 
 
+Route::get('/products/{id?}', [OrderController::class, 'getProducts']);
+
+Route::post('/products', [OrderController::class, 'createProduct']);
+
+
 ?>
