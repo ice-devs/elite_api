@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// use App\CloudinaryUploader;
+use App\CloudinaryUploader;
 
 class ProductController extends Controller
 {
-    private $uploader;
+    // private $uploader;
 
 
     // public function __construct()
@@ -28,8 +28,7 @@ class ProductController extends Controller
 
     private function saveFile($file)
     {
-        // $fileUrl = $this->uploader->uploadFile($file);
-        $fileUrl = "JJJ";
+        $fileUrl = CloudinaryUploader::uploadFile($file);
         return $fileUrl;
     }
 

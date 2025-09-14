@@ -14,7 +14,7 @@ class CloudinaryUploader {
         $this->cloudinary = new Cloudinary(Configuration::instance(getenv('CLOUDINARY_URL')));
     }
 
-    public function uploadFile($file) {
+    public static function uploadFile($file) {
         try {
             $options = [];
             $options['folder'] = "EliteProducts";
