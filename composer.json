@@ -8,10 +8,10 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9",
-        "cloudinary/cloudinary_php": "^2"
+        "php": "^8.2",
+        "cloudinary/cloudinary_php": "3",
+        "laravel/framework": "^12",
+        "laravel/tinker": "^2.9"
     },
     "require-dev": {
         "filp/whoops": "^2.15",
@@ -23,7 +23,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {

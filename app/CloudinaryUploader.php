@@ -2,6 +2,7 @@
 
 namespace App;
 
+
 use Cloudinary\Cloudinary;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
@@ -11,7 +12,7 @@ class CloudinaryUploader {
     private $cloudinary;
 
     public function __construct() {
-        $this->cloudinary = new Cloudinary(Configuration::instance(getenv('CLOUDINARY_URL')));
+        $this->cloudinary = new Cloudinary(getenv('CLOUDINARY_URL'));
     }
 
     public static function uploadFile($file) {
