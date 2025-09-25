@@ -19,7 +19,8 @@ class CloudinaryUploader {
         try {
             $options = [];
             $options['folder'] = "EliteProducts";
-            $result = (new UploadApi())->upload($file['tmp_name'], $options);
+            $result = (new UploadApi())->upload($file->getRealPath(), $options);
+
             return $result['secure_url'];
         } catch (Exception $e) {
             echo 'File upload error: ' . $e->getMessage();
