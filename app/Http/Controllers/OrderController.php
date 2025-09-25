@@ -104,6 +104,14 @@ class OrderController extends Controller
 
             // Update product sales count
             $productArray = json_decode($request->input('product'), true);
+
+            if (!is_array($productArray)) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Invalid product data format"
+                ], 400);
+            }
+
             $this->updateProductSalesCount($productArray);
 
             return response()->json([
@@ -120,11 +128,11 @@ class OrderController extends Controller
         }
     }
 
-    public function updateProductSalesCount($productArray)
+    public function updateProductSalesCount(array $productArray)
     {
         foreach ($productArray as $product) {
-            $productId = $product->productId;
-            $productCount = $product->quantity;
+            $productId = $product['productId'];
+            $productCount = $product['quantity'];
 
             ProductController::updateSalesCount($productId, $productCount);
         }
