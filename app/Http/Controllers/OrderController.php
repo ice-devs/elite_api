@@ -103,7 +103,8 @@ class OrderController extends Controller
             ]);
 
             // Update product sales count
-            $this->updateProductSalesCount($productJson);
+            $productArray = json_decode($request->input('product'), true);
+            $this->updateProductSalesCount($productArray);
 
             return response()->json([
                 "status"  => "success",
