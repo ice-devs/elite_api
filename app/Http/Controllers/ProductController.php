@@ -4,27 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use App\CloudinaryUploader;
 
 class ProductController extends Controller
 {
-    // private $uploader;
 
-
-    // public function __construct()
+    // private function generateProductId($length = 8)
     // {
-    //     $this->uploader = new CloudinaryUploader();
+    //     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //     $productId = '';
+    //     for ($i = 0; $i < $length; $i++) {
+    //         $productId .= $characters[rand(0, strlen($characters) - 1)];
+    //     }
+    //     return $productId;
     // }
-
-    private function generateProductId($length = 8)
-    {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        $productId = '';
-        for ($i = 0; $i < $length; $i++) {
-            $productId .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        return $productId;
-    }
 
     private function saveFile($file)
     {
@@ -72,10 +66,10 @@ class ProductController extends Controller
     }
 
 
-    public function updateSalesCount($name, $salesCount)
+    public static function updateSalesCount($productId, $salesCount)
     {
         $updated = DB::table('products')
-            ->where('name', $name)
+            ->where('productId', $productId)
             ->update([
                 'quantity' => DB::raw("GREATEST(0, quantity - $salesCount)"),
                 'salesCount' => DB::raw("salesCount + $salesCount"),
@@ -94,7 +88,8 @@ class ProductController extends Controller
 
     public function createProduct(Request $request)
     {
-        $productId = $this->generateProductId();
+        $productId = Str::uuid();
+
 
         // Format current time in Africa/Lagos timezone
         $dateTime = new \DateTime('now', new \DateTimeZone('Africa/Lagos'));

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use App\Http\Controllers\ProductController;
 
 
@@ -14,20 +15,20 @@ class OrderController extends Controller
 
     private $products;
 
-    public function __construct()
-    {
-        $this->products = new ProductController();
-    }
+    // public function __construct()
+    // {
+    //     $this->products = new ProductController();
+    // }
 
-    private function generateOrderId($length = 8)
-    {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        $orderId = '';
-        for ($i = 0; $i < $length; $i++) {
-            $orderId .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        return $orderId;
-    }
+    // private function generateOrderId($length = 8)
+    // {
+    //     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //     $orderId = '';
+    //     for ($i = 0; $i < $length; $i++) {
+    //         $orderId .= $characters[rand(0, strlen($characters) - 1)];
+    //     }
+    //     return $orderId;
+    // }
 
     public function getOrders($id = null)
     {
@@ -69,7 +70,7 @@ class OrderController extends Controller
     public function createOrder(Request $request)
     {
         // Generate a unique orderId
-        $orderId = $this->generateOrderId();
+        $orderId = Str::uuid();
 
         $dateTime = new \DateTime('now', new \DateTimeZone('Africa/Lagos'));
         $date = $dateTime->format('m-d-Y h:i A');
@@ -102,7 +103,7 @@ class OrderController extends Controller
             ]);
 
             // Update product sales count
-            // $this->updateProductSalesCount($request->input('product'));
+            $this->updateProductSalesCount($request->input('product'));
 
             return response()->json([
                 "status"  => "success",
@@ -121,10 +122,10 @@ class OrderController extends Controller
     public function updateProductSalesCount($productArray)
     {
         foreach ($productArray as $product) {
-            $name = $product->name;
+            $productId = $product->productId;
             $productCount = $product->quantity;
 
-            $this->products->updateSalesCount($name, $productCount);
+            ProductController::updateSalesCount($productId, $productCount);
         }
     }
 
