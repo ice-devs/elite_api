@@ -168,7 +168,7 @@
                     </td>
                     </tr>
 
-                    
+
                     <tr>
                         <td style="width:30%; background-color:rgb(3, 54, 105); color:white; padding: 8px; text-align: left; font-weight:bold; font-size:11px;">Order status</td>
                         <td style="width:70%; color:white; padding: 8px; text-align: left; font-size:12px; background-color:rgb(57, 87, 117);"><?php echo ($status); ?></td>
@@ -193,7 +193,7 @@
                         <td style="width:30%; background-color:rgb(3, 54, 105); color:white; padding: 8px; text-align: left; font-weight:bold; font-size:11px;">Balance</td>
                         <td style="width:70%; color:white; padding: 8px; text-align: left; font-size:12px; background-color:rgb(57, 87, 117);">₦<?php echo (number_format($balance)); ?>.00</td>
                     </tr>
-                    
+
             </table>
         </div>
 
