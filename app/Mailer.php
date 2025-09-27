@@ -33,17 +33,9 @@ class Mailer
 
     }
 
-    public function mailIt($orderId)
+    public function mailIt($request, $orderId)
     {
         try {
-            // Fetch order details
-            $dataArray = OrderController::getOrderById($orderId);
-            $fullData = (object) $dataArray;
-
-
-            if (!$fullData) {
-                throw new \RuntimeException("Order with ID {$orderId} not found.");
-            }
 
             // Configure PHPMailer
             $this->mailer->isSMTP();
@@ -56,7 +48,7 @@ class Mailer
 
             // Sender and recipient
             $this->mailer->setFrom($this->smtpEmail, $this->smtpSender);
-            $this->mailer->addAddress($fullData->email ?? '', $fullData->clientName ?? 'Customer');
+            $this->mailer->addAddress($request->input('email'), $request->input('clientName') ?? 'Customer');
             $this->mailer->addReplyTo($this->smtpEmail, $this->smtpSender);
 
             // Email format
@@ -66,9 +58,9 @@ class Mailer
             $letterFile = null;
 
 
-            $shortId = Str::substr($fullData->orderId, 0, 8);
+            $shortId = Str::substr($orderId, 0, 8);
 
-            switch ($fullData->status) {
+            switch ($request->input('status')) {
                 case 'ordered':
                     $this->mailer->Subject = $this->subjectOrdered . " [order-{$shortId}]";
                     $letterFile = dirname(__DIR__) . '/letters/order_letter.php';
@@ -85,19 +77,33 @@ class Mailer
                     break;
 
                 default:
-                    throw new \InvalidArgumentException("Invalid order status: {$fullData->status}");
+                    throw new \InvalidArgumentException("Invalid order status: {$request->input('status')}");
             }
+
+            // Convert product to JSON
+            $productJson = json_encode($request->input('product'));
 
             // Prepare template variables
             $data = [
-                'id'            => $shortId,
-                'name'          => $fullData->clientName,
-                'status'        => $fullData->status,
-                'paymentMethod' => $fullData->payMethod,
-                'products'      => $fullData->product,
-                'total'         => $fullData->total,
-                'amountPaid'    => $fullData->amountPaid,
-                'balance'       => $fullData->balance,
+                'id'             => $shortId,
+                'name'           => $request->input('name'),
+                'status'         => $request->input('status'),
+                'payMethod'      => $request->input('payMethod'),
+                'product'        => $productJson,
+                'total'          => $request->input('total'),
+                'amountPaid'     => $request->input('amountPaid'),
+                'balance'        => $request->input('balance'),
+
+                'clientName'     => $request->input('clientName'),
+                'email'          => $request->input('email'),
+                'phone'          => $request->input('phone'),
+                'address'        => $request->input('address'),
+                'deliveryFee'    => $request->input('deliveryFee'),
+                'subtotal'       => $request->input('subtotal'),
+                'coupon'         => $request->input('coupon'),
+                'discount'       => $request->input('discount'),
+                'deliveryState'  => $request->input('deliveryState'),
+                'deliveryMethod' => $request->input('deliveryMethod'),
             ];
 
             // Generate email body

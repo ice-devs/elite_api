@@ -74,10 +74,10 @@ class OrderController extends Controller
             // Insert order into DB
             DB::table('orders')->insert([
                 'orderId'        => $orderId,
-                'clientName'     => $request->input('clientName', ''), // fallback if not provided
-                'email'          => $request->input('email', ''),
-                'phone'          => $request->input('phone', ''),
-                'address'        => $request->input('address', ''),
+                'clientName'     => $request->input('clientName'),
+                'email'          => $request->input('email'),
+                'phone'          => $request->input('phone'),
+                'address'        => $request->input('address'),
                 'name'           => $request->input('name'),
                 'status'         => $request->input('status'),
                 'deliveryFee'    => $request->input('deliveryFee'),
@@ -91,10 +91,10 @@ class OrderController extends Controller
                 'deliveryState'  => $request->input('deliveryState'),
                 'deliveryMethod' => $request->input('deliveryMethod'),
                 'payMethod'      => $request->input('payMethod'),
-                'date'           => $date,
+                'date'           => $date
             ]);
 
-            $sendMail = $this->Mailer->mailIt($orderId);
+            $sendMail = $this->Mailer->mailIt($request, $orderId);
             $sendMail;
 
 
