@@ -89,7 +89,7 @@ class Mailer
                 'name'           => $request->input('name'),
                 'status'         => $request->input('status'),
                 'payMethod'      => $request->input('payMethod'),
-                'products'       => (object) $productJson,
+                'products'       => json_decode($productJson),
                 'total'          => $request->input('total'),
                 'amountPaid'     => $request->input('amountPaid'),
                 'balance'        => $request->input('balance'),
