@@ -8,14 +8,17 @@ use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
 use Exception;
 
-class CloudinaryUploader {
+class CloudinaryUploader
+{
     private $cloudinary;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->cloudinary = new Cloudinary(getenv('CLOUDINARY_URL'));
     }
 
-    public static function uploadFile($file) {
+    public static function uploadFile($file)
+    {
         try {
             $options = [];
             $options['folder'] = "EliteProducts";
@@ -28,4 +31,3 @@ class CloudinaryUploader {
         }
     }
 }
-?>

@@ -2,33 +2,25 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ProductController;
+use App\Mailer;
 
 
 
 class OrderController extends Controller
 {
 
-    private $products;
 
-    // public function __construct()
-    // {
-    //     $this->products = new ProductController();
-    // }
+    private $Mailer;
+    public function __construct()
+    {
+        // Initialize Mailer class
+        $this->Mailer = new Mailer;
 
-    // private function generateOrderId($length = 8)
-    // {
-    //     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    //     $orderId = '';
-    //     for ($i = 0; $i < $length; $i++) {
-    //         $orderId .= $characters[rand(0, strlen($characters) - 1)];
-    //     }
-    //     return $orderId;
-    // }
+    }
 
     public function getOrders($id = null)
     {
@@ -46,7 +38,7 @@ class OrderController extends Controller
         }
     }
 
-    public function getOrderById($orderId)
+    public static function getOrderById($orderId)
     {
         $order = DB::table('orders')
             ->where('orderId', $orderId)
@@ -102,6 +94,18 @@ class OrderController extends Controller
                 'date'           => $date,
             ]);
 
+            $sendMail = $this->Mailer->mailIt($orderId);
+            $sendMail;
+
+
+            // if (!$sendMail) {
+            //     return response()->json([
+            //         "status" => "error",
+            //         "message" => "Mail not sent"
+            //     ], 400);
+            // }
+
+
             // Update product sales count
             $productArray = json_decode($request->input('product'), true);
 
@@ -138,8 +142,96 @@ class OrderController extends Controller
         }
     }
 
+    public function updateStatus(Request $request)
+    {
+        $updated = DB::table('orders')
+            ->where('orderId', $request->orderId)
+            ->update([
+                'status' => $request->status,
+                'updated_at' => now()
+            ]);
+
+        if ($updated) {
+            return response()->json([
+                "status" => "Success",
+                "message" => "Status set to {$request->status} successfully"
+            ]);
+        }
+
+        return response()->json([
+            "status" => "Error",
+            "message" => "Order update failed."
+        ], 400);
+    }
+
+    public function payBalance(Request $request)
+    {
+        $updated = DB::table('orders')
+            ->where('orderId', $request->orderId)
+            ->update([
+                'balance'   => DB::raw("GREATEST(0, balance - {$request->amount})"),
+                'amountPaid'=> DB::raw("amountPaid + {$request->amount}"),
+                'status'    => DB::raw("
+                    CASE
+                        WHEN balance = 0 AND email = '' THEN 'Pending'
+                        WHEN balance = 0 AND email != '' THEN 'Ordered'
+                        ELSE status
+                    END
+                "),
+                'updated_at'=> now()
+            ]);
+
+        if ($updated) {
+            return response()->json([
+                "status" => "Success",
+                "message" => "Amount paid successfully"
+            ]);
+        }
+
+        return response()->json([
+            "status" => "Error",
+            "message" => "An error occurred, please try again."
+        ], 400);
+    }
+
+    public function customerAction(Request $request)
+    {
+        $newStatus = $request->status === "Pending"
+                        ? "Ordered"
+                        : ($request->status === "Installment" ? "Installment" : $request->status);
+
+        $updated = DB::table('orders')
+            ->where('orderId', $request->orderId)
+            ->update([
+                'clientName' => $request->clientName,
+                'email'      => $request->email,
+                'phone'      => $request->phone,
+                'address'    => $request->address,
+                'status'     => $newStatus,
+                'updated_at' => now()
+            ]);
+
+        if ($updated) {
+            // If you want to trigger email here later
+            // $this->mailer->mailIt($request->orderId);
+
+            return response()->json([
+                "status" => "Success",
+                "message" => "Thanks! order updated successfully"
+            ]);
+        }
+
+        return response()->json([
+            "status" => "Error",
+            "message" => "An error occurred, please try again."
+        ], 400);
+    }
+
 
 }
+
+
+
 
 
 
