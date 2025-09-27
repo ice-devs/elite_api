@@ -80,16 +80,13 @@ class Mailer
                     throw new \InvalidArgumentException("Invalid order status: {$request->input('status')}");
             }
 
-            // Convert product to JSON
-            $productJson = json_encode($request->input('product'));
-
             // Prepare template variables
             $data = [
                 'id'             => $shortId,
                 'name'           => $request->input('name'),
                 'status'         => $request->input('status'),
                 'payMethod'      => $request->input('payMethod'),
-                'products'       => json_decode($productJson),
+                'products'       => $request->input('product'),
                 'total'          => $request->input('total'),
                 'amountPaid'     => $request->input('amountPaid'),
                 'balance'        => $request->input('balance'),
