@@ -175,7 +175,7 @@
                     </tr>
                     <tr>
                         <td style="width:30%; background-color:rgb(3, 54, 105); color:white; padding: 8px; text-align: left; font-weight:bold; font-size:11px;">Payment method</td>
-                        <td style="width:70%; color:white; padding: 8px; text-align: left; font-size:12px; background-color:rgb(57, 87, 117);"><?php echo ($payment_method); ?></td>
+                        <td style="width:70%; color:white; padding: 8px; text-align: left; font-size:12px; background-color:rgb(57, 87, 117);"><?php echo ($payMethod); ?></td>
                     </tr>
 
 
