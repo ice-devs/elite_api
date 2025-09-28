@@ -40,7 +40,7 @@ class Mailer
             // Configure PHPMailer
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth   = true;
-            $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $this->mailer->SMTPSecure = 'tls';
             $this->mailer->Port       = 587;
             $this->mailer->Host       = $this->smtpHost;
             $this->mailer->Username   = $this->smtpEmail;
@@ -119,6 +119,7 @@ class Mailer
             }
 
             $this->mailer->msgHTML($emailBody);
+            $this->mailer->SMTPDebug = 2;
 
             // Send the email
             $this->mailer->send();
