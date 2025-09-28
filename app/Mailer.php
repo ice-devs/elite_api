@@ -85,7 +85,7 @@ class Mailer
 
             // If it's a string (JSON), decode it
             if (is_string($products)) {
-                $products = json_decode($products, true); // decode to array
+                $products = json_decode($products);
             }
 
             // Prepare template variables
