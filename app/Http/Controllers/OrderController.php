@@ -94,7 +94,7 @@ class OrderController extends Controller
                 'date'           => $date
             ]);
 
-            $sendMail = $this->Mailer->mailIt($request, $orderId);
+            // $sendMail = $this->Mailer->mailIt($request, $orderId);
             // $sendMail;
 
 
