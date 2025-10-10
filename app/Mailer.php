@@ -38,6 +38,7 @@ class Mailer
         try {
 
             // Configure PHPMailer
+
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth   = true;
             $this->mailer->SMTPSecure = 'tls';
