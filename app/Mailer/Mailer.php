@@ -106,7 +106,7 @@ class Mailer
 
     private function resolveTemplate(string $status, string $shortId): string
     {
-         $base = base_path('letters');
+        $base = dirname(__DIR__, 1) . '/letters';
 
         switch ($status) {
             case 'ordered':
