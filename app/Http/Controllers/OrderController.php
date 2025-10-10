@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ProductController;
-use App\Mailer;
+use App\Mailer\Mailer;
 
 
 
@@ -14,13 +14,13 @@ class OrderController extends Controller
 {
 
 
-    private $Mailer;
-    public function __construct()
-    {
-        // Initialize Mailer class
-        $this->Mailer = new Mailer;
+    // private $Mailer;
+    // public function __construct()
+    // {
+    //     // Initialize Mailer class
+    //     $this->Mailer = new Mailer;
 
-    }
+    // }
 
     public function getOrders($id = null)
     {
@@ -96,6 +96,9 @@ class OrderController extends Controller
 
             // $sendMail = $this->Mailer->mailIt($request, $orderId);
             // $sendMail;
+
+            $mailer = new Mailer();
+            $mailer->mailIt($request, $orderId);
 
 
             // if (!$sendMail) {
