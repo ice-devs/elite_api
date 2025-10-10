@@ -95,7 +95,7 @@ class OrderController extends Controller
             ]);
 
             $sendMail = $this->Mailer->mailIt($request, $orderId);
-            $sendMail;
+            // $sendMail;
 
 
             // if (!$sendMail) {
