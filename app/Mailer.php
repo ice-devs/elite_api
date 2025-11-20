@@ -41,8 +41,8 @@ class Mailer
             $this->mailer->isSMTP();
             $this->mailer->SMTPDebug = 4;
             $this->mailer->SMTPAuth   = true;
-            $this->mailer->SMTPSecure = 'tls';
-            $this->mailer->Port       = 587;
+            $this->mailer->SMTPSecure = 'ssl';
+            $this->mailer->Port       = 465;
             $this->mailer->Host       = $this->smtpHost;
             $this->mailer->Username   = $this->smtpEmail;
             $this->mailer->Password   = $this->smtpPassword;
