@@ -23,10 +23,10 @@ class Mailer
     public function __construct()
     {
         // Load SMTP configuration from environment variables
-        $this->smtpEmail    = getenv('SMTP_EMAIL') ;
-        $this->smtpPassword = getenv('SMTP_PASSWORD') ;
-        $this->smtpHost     = getenv('SMTP_HOSTNAME') ;
-        $this->smtpSender   = getenv('SMTP_SENDER') ;
+        $this->smtpEmail    = env('SMTP_EMAIL') ;
+        $this->smtpPassword = env('SMTP_PASSWORD') ;
+        $this->smtpHost     = env('SMTP_HOSTNAME') ;
+        $this->smtpSender   = env('SMTP_SENDER') ;
 
         // Initialize PHPMailer
         $this->mailer = new PHPMailer(true);
@@ -39,10 +39,10 @@ class Mailer
 
             // Configure PHPMailer
             $this->mailer->isSMTP();
-            $this->mailer->SMTPDebug = 4;
+            $this->mailer->SMTPDebug = 3;
             $this->mailer->SMTPAuth   = true;
-            $this->mailer->SMTPSecure = 'ssl';
-            $this->mailer->Port       = 465;
+            $this->mailer->SMTPSecure = 'tls';
+            $this->mailer->Port       = 587;
             $this->mailer->Host       = $this->smtpHost;
             $this->mailer->Username   = $this->smtpEmail;
             $this->mailer->Password   = $this->smtpPassword;
